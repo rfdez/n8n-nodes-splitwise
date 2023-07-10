@@ -3,8 +3,6 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-const scopes: string[] = [];
-
 export class SplitwiseOAuth2Api implements ICredentialType {
 	name = 'splitwiseOAuth2Api';
 	extends = ['oAuth2Api'];
@@ -33,7 +31,7 @@ export class SplitwiseOAuth2Api implements ICredentialType {
 			displayName: 'Scope',
 			name: 'scope',
 			type: 'hidden',
-			default: `${scopes.join(' ')}`,
+			default: '',
 		},
 		{
 			displayName: 'Auth URI Query Parameters',

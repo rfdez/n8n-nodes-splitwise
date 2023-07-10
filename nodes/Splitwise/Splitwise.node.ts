@@ -1,4 +1,6 @@
-import { INodeType, INodeTypeDescription } from 'n8n-workflow';
+import { IDataObject, IExecuteFunctions, INodeExecutionData, INodeType, INodeTypeDescription, NodeOperationError } from 'n8n-workflow';
+import { expenseFields, expenseOperations } from './ExpenseDescription';
+import { getCategories, getCurrencies, getGroups, splitwiseApiRequest } from './GenericFunctions';
 
 export class Splitwise implements INodeType {
 	description: INodeTypeDescription = {
@@ -20,7 +22,7 @@ export class Splitwise implements INodeType {
 				required: true,
 				displayOptions: {
 					show: {
-						authentication: ['splitwiseApi'],
+						authentication: ['apiKey'],
 					},
 				},
 			},
@@ -29,14 +31,13 @@ export class Splitwise implements INodeType {
 				required: true,
 				displayOptions: {
 					show: {
-						authentication: ['splitwiseOAuth2Api'],
+						authentication: ['oAuth2'],
 					},
 				},
 			},
 		],
 		requestDefaults: {
 			baseURL: 'https://secure.splitwise.com/api/v3.0',
-			url: '',
 			headers: {
 				Accept: 'application/json',
 				'Content-Type': 'application/json',
@@ -50,19 +51,15 @@ export class Splitwise implements INodeType {
 				options: [
 					{
 						name: 'API Key',
-						value: 'splitwiseApi',
+						value: 'apiKey',
 					},
 					{
 						name: 'OAuth2',
-						value: 'splitwiseOAuth2Api',
+						value: 'oAuth2',
 					},
 				],
-				default: 'splitwiseApi',
+				default: 'apiKey',
 			},
-			// ----------------------------------
-			//         expense
-			//         ...
-			// ----------------------------------
 			{
 				displayName: 'Resource',
 				name: 'resource',
@@ -76,135 +73,72 @@ export class Splitwise implements INodeType {
 				],
 				default: 'expense',
 			},
-			// ----------------------------------
-			//         expense
-			// ----------------------------------
-			{
-				displayName: 'Operation',
-				name: 'operation',
-				type: 'options',
-				noDataExpression: true,
-				displayOptions: {
-					show: {
-						resource: ['expense'],
-					},
-				},
-				options: [
-					{
-						name: 'Create',
-						value: 'create',
-						description: 'Create an expense',
-						action: 'Create an expense',
-						routing: {
-							request: {
-								method: 'POST',
-								url: '/create_expense',
-							},
-						},
-					},
-				],
-				default: 'create',
-			},
-			// ----------------------------------
-			//         additionalFields
-			// ----------------------------------
-			// {
-			// 	displayName: 'Additional Fields',
-			// 	name: 'additionalFields',
-			// 	type: 'collection',
-			// 	placeholder: 'Add Field',
-			// 	default: {},
-			// 	options: [
-			// 		{
-			// 			displayName: 'Category',
-			// 			name: 'category_id',
-			// 			type: 'options',
-			// 			default: '',
-			// 			options:[],
-			// 		},
-			// 		{
-			// 			displayName: 'Currency Code',
-			// 			name: 'currency_code',
-			// 			type: 'string',
-			// 			default: '',
-			// 			options:[],
-			// 		}
-			// 	],
-			// 	displayOptions: {
-			// 		show: {
-			// 			resource: [
-			// 				'expense'
-			// 			],
-			// 			operation: [
-			// 				'create'
-			// 			]
-			// 		},
-			// 	},
-			// },
-			// ----------------------------------
-			//         expense:create
-			// ----------------------------------
-			// {
-			// 	displayName: 'Cost',
-			// 	description: 'Cost of the expense',
-			// 	name: 'cost',
-			// 	type: 'number',
-			// 	default: 0,
-			// 	required: true,
-			// 	displayOptions: {
-			// 		show: {
-			// 			resource: ['expense'],
-			// 			operation: ['create'],
-			// 		},
-			// 	},
-			// },
-			// {
-			// 	displayName: 'Group Name or ID',
-			// 	description: 'Name or ID of the group to add the expense to',
-			// 	name: 'group_id',
-			// 	type: 'options',
-			// 	default: '',
-			// 	required: true,
-			// 	displayOptions: {
-			// 		show: {
-			// 			resource: ['expense'],
-			// 			operation: ['create'],
-			// 		},
-			// 	},
-			// 	typeOptions: {
-			// 		loadOptions: {
-			// 			routing: {
-			// 				request: {
-			// 					method: 'GET',
-			// 					url: '/get_groups',
-			// 				},
-			// 				output: {
-			// 					postReceive: [
-			// 						{
-			// 							type: 'rootProperty',
-			// 							properties: {
-			// 								property: 'groups',
-			// 							},
-			// 						},
-			// 						{
-			// 							type: 'setKeyValue',
-			// 							properties: {
-			// 								name: '={{$responseItem.name}} ({{$responseItem.group_type}})',
-			// 								value: '={{$responseItem.id}}',
-			// 							},
-			// 						},
-			// 						{
-			// 							type: 'sort',
-			// 							properties: {
-			// 								key: 'name',
-			// 							},
-			// 						},
-			// 					],
-			// 				},
-			// 			},
-			// 		},
-			// 	},
-			// },
+			...expenseOperations,
+			...expenseFields,
 		],
+	}
+
+	methods = {
+		loadOptions: {
+			getCategories,
+			getCurrencies,
+			getGroups
+		},
+	}
+
+	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
+		const items = this.getInputData();
+		const returnData: IDataObject[] = [];
+
+		const resource = this.getNodeParameter('resource', 0) as string;
+		const operation = this.getNodeParameter('operation', 0) as string;
+
+		for (let i = 0; i < items.length; i++) {
+			try {
+				if (resource === 'expense') {
+					if (operation === 'create') {
+						const cost = this.getNodeParameter('cost', i) as number;
+						const description = this.getNodeParameter('description', i) as string;
+						const currencyCode = this.getNodeParameter('currency_code', i) as string;
+						const categoryId = this.getNodeParameter('category_id', i) as number;
+						const groupId = this.getNodeParameter('group_id', i) as number;
+						const splitEqually = this.getNodeParameter('split_equally', i) as boolean;
+
+						const body: IDataObject = {
+							cost: cost.toFixed(2),
+							description,
+							currency_code: currencyCode,
+							category_id: categoryId,
+							group_id: groupId,
+							split_equally: splitEqually,
+						};
+
+						const additionalFields = this.getNodeParameter('additionalFields', i) as IDataObject;
+
+						if (Object.keys(additionalFields).length) {
+							Object.assign(body, additionalFields);
+						}
+
+						const response = await splitwiseApiRequest.call(this, 'POST', '/create_expense', body);
+
+						if (response.error || response.errors?.base?.length) {
+							const errorMessage = response.error ? response.error : response.errors.base[0];
+							throw new NodeOperationError(this.getNode(), errorMessage, { itemIndex: i });
+						}
+
+						returnData.push(response.expenses);
+					}
+				}
+			} catch (error) {
+				if (this.continueOnFail()) {
+					returnData.push({ error: error.message });
+					continue;
+				}
+
+				throw error;
+			}
+		}
+
+		return [this.helpers.returnJsonArray(returnData)];
 	}
 }
