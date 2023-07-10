@@ -7,7 +7,7 @@ import {
 	INodePropertyOptions,
 	JsonObject,
 	NodeApiError,
-} from "n8n-workflow";
+} from 'n8n-workflow';
 
 export async function splitwiseApiRequest(
 	this: IHookFunctions | IExecuteFunctions | ILoadOptionsFunctions,
@@ -41,7 +41,9 @@ export async function getCurrencies(this: ILoadOptionsFunctions): Promise<INodeP
 	const responseData = await splitwiseApiRequest.call(this, 'GET', endpoint, {});
 
 	if (responseData.currencies === undefined) {
-		throw new NodeApiError(this.getNode(), responseData as JsonObject, { message: 'No data got returned' });
+		throw new NodeApiError(this.getNode(), responseData as JsonObject, {
+			message: 'No data got returned',
+		});
 	}
 
 	const returnData: INodePropertyOptions[] = [];
@@ -72,7 +74,9 @@ export async function getCategories(this: ILoadOptionsFunctions): Promise<INodeP
 	const responseData = await splitwiseApiRequest.call(this, 'GET', endpoint, {});
 
 	if (responseData.categories === undefined) {
-		throw new NodeApiError(this.getNode(), responseData as JsonObject, { message: 'No data got returned' });
+		throw new NodeApiError(this.getNode(), responseData as JsonObject, {
+			message: 'No data got returned',
+		});
 	}
 
 	const returnData: INodePropertyOptions[] = [];
@@ -116,7 +120,9 @@ export async function getGroups(this: ILoadOptionsFunctions): Promise<INodePrope
 	const responseData = await splitwiseApiRequest.call(this, 'GET', endpoint, {});
 
 	if (responseData.groups === undefined) {
-		throw new NodeApiError(this.getNode(), responseData as JsonObject, { message: 'No data got returned' });
+		throw new NodeApiError(this.getNode(), responseData as JsonObject, {
+			message: 'No data got returned',
+		});
 	}
 
 	const returnData: INodePropertyOptions[] = [];

@@ -61,7 +61,8 @@ const createExpenseFields: INodeProperties[] = [
 		displayName: 'Group Name or ID',
 		name: 'group_id',
 		type: 'options',
-		description: 'Name or ID of the group to add the expense to. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+		description:
+			'Name or ID of the group to add the expense to. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 		default: '',
 		required: true,
 		displayOptions: {
@@ -78,7 +79,8 @@ const createExpenseFields: INodeProperties[] = [
 		displayName: 'Currency Code Name or ID',
 		name: 'currency_code',
 		type: 'options',
-		description: 'Currency code of the expense (the ID is the Code). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+		description:
+			'Currency code of the expense (the ID is the Code). Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 		default: '',
 		required: true,
 		displayOptions: {
@@ -95,7 +97,8 @@ const createExpenseFields: INodeProperties[] = [
 		displayName: 'Category Name or ID',
 		name: 'category_id',
 		type: 'options',
-		description: 'Category of the expense. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+		description:
+			'Category of the expense. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 		default: '',
 		required: true,
 		displayOptions: {
@@ -179,7 +182,7 @@ const createExpenseFields: INodeProperties[] = [
 				],
 			},
 		],
-	}
+	},
 ];
 
 export const expenseFields: INodeProperties[] = [...createExpenseFields];

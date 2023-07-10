@@ -1,4 +1,11 @@
-import { IDataObject, IExecuteFunctions, INodeExecutionData, INodeType, INodeTypeDescription, NodeOperationError } from 'n8n-workflow';
+import {
+	IDataObject,
+	IExecuteFunctions,
+	INodeExecutionData,
+	INodeType,
+	INodeTypeDescription,
+	NodeOperationError,
+} from 'n8n-workflow';
 import { expenseFields, expenseOperations } from './ExpenseDescription';
 import { getCategories, getCurrencies, getGroups, splitwiseApiRequest } from './GenericFunctions';
 
@@ -76,15 +83,15 @@ export class Splitwise implements INodeType {
 			...expenseOperations,
 			...expenseFields,
 		],
-	}
+	};
 
 	methods = {
 		loadOptions: {
 			getCategories,
 			getCurrencies,
-			getGroups
+			getGroups,
 		},
-	}
+	};
 
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 		const items = this.getInputData();

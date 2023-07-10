@@ -1,7 +1,4 @@
-import {
-	ICredentialType,
-	INodeProperties,
-} from 'n8n-workflow';
+import { ICredentialType, INodeProperties } from 'n8n-workflow';
 
 export class SplitwiseOAuth2Api implements ICredentialType {
 	name = 'splitwiseOAuth2Api';
