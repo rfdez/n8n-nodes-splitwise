@@ -1,12 +1,12 @@
 {
   "name": "@rfdez/n8n-nodes-splitwise",
   "version": "0.1.0",
-  "description": "n8n community nodes for Splitwise API",
+  "description": "n8n community node to consume the Splitwise API",
   "keywords": [
     "n8n-community-node-package"
   ],
   "license": "MIT",
-  "homepage": "https://splitwise.com",
+  "homepage": "https://github.com/rfdez/n8n-nodes-splitwise",
   "author": {
     "name": "Raúl Fernández",
     "email": "info@raulfernandez.dev"
