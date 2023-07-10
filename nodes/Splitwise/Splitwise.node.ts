@@ -10,7 +10,7 @@ export class Splitwise implements INodeType {
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
-		description: 'Interact with Splitwise API',
+		description: 'Consume the Splitwise API',
 		defaults: {
 			name: 'Splitwise',
 		},
