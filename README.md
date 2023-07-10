@@ -21,32 +21,33 @@ Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes
 ## Operations
 
 - Expenses
-	- Create an expense
+	- Create an expense (in equally split mode)
 
 ## Credentials
 
-_If users need to authenticate with the app/service, provide details here. You should include prerequisites (such as signing up with the service), available authentication methods, and how to set them up._
+To use this node you need to create an application in your Splitwise account. You can create one [here](https://secure.splitwise.com/apps).
 
-- OAuth 2.0
+Once you have created the app, you can use one of the following authentication methods with it in n8n:
+
 - API Key
+- OAuth 2.0
+
+If you are using the API Key authentication method, you need to provide the API Key in the `API Key` field, you can generate one [here](https://secure.splitwise.com/apps).
+
+If you are using the OAuth 2.0 authentication method, you need to copy the callback URL provided in the credentials window and paste it in the Callback URL field of your app in Splitwise. You can then enter the credentials in the `OAuth2` field in the credentials window in n8n. For Splitwise, the `OAuth2` field requires the following credentials:
+
+- **Client ID** also known as the Consumer Key in Splitwise
+- **Client Secret** also known as the Consumer Secret in Splitwise
 
 ## Compatibility
 
-_State the minimum n8n version, as well as which versions you test against. You can also include any known version incompatibility issues._
+This node was tested against Splitwise API 3.0.0 and n8n 0.234.1.
 
 ## Usage
 
-_This is an optional section. Use it to help users with any difficult or confusing aspects of the node._
-
-_By the time users are looking for community nodes, they probably already know n8n basics. But if you expect new users, you can link to the [Try it out](https://docs.n8n.io/try-it-out/) documentation to help them get started._
+If you are new to n8n, it is recommended to read the [Getting Started](https://docs.n8n.io/try-it-out/) guide for a high-level overview of n8n.
 
 ## Resources
 
 * [n8n community nodes documentation](https://docs.n8n.io/integrations/community-nodes/)
-* _Link to app/service documentation._
-
-## Version history
-
-_This is another optional section. If your node has multiple versions, include a short description of available versions and what changed, as well as any compatibility impact._
-
-
+* [Splitwise documentation](https://dev.splitwise.com/)
