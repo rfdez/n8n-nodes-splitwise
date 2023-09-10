@@ -41,7 +41,7 @@ If you are using the OAuth 2.0 authentication method, you need to copy the callb
 
 ## Compatibility
 
-This node was tested against Splitwise API 3.0.0 and n8n 0.234.1.
+This node was tested against Splitwise API 3.0.0 and n8n 1.5.1.
 
 ## Usage
 
