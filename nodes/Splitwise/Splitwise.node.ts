@@ -65,7 +65,7 @@ export class Splitwise implements INodeType {
 						value: 'oAuth2',
 					},
 				],
-				default: 'apiKey',
+				default: 'oAuth2',
 			},
 			{
 				displayName: 'Resource',
