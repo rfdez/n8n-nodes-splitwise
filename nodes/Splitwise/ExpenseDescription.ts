@@ -19,6 +19,12 @@ export const expenseOperations: INodeProperties[] = [
 				description: 'Create an expense',
 				action: 'Create an expense',
 			},
+			{
+				name: 'Get Many',
+				value: 'getAll',
+				description: "List the current user's expenses",
+				action: 'Get many expenses',
+			},
 		],
 	},
 ];
@@ -185,4 +191,92 @@ const createExpenseFields: INodeProperties[] = [
 	},
 ];
 
-export const expenseFields: INodeProperties[] = [...createExpenseFields];
+const getAllExpenseFields: INodeProperties[] = [
+	{
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['expense'],
+				operation: ['getAll'],
+			},
+		},
+		options: [
+			{
+				displayName: 'Group Name or ID',
+				name: 'group_id',
+				type: 'options',
+				description:
+					'Name or ID of the group to get the expenses. If provided, only expenses in that group will be returned, and `friend_id` will be ignored. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+				default: '',
+				typeOptions: {
+					loadOptionsMethod: 'getGroups',
+				},
+			},
+			{
+				displayName: 'Friend Name or ID',
+				name: 'friend_id',
+				type: 'options',
+				description:
+					'Name or ID of another user. If provided, only expenses between the current and provided user will be returned. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+				default: '',
+				typeOptions: {
+					loadOptionsMethod: 'getFriends',
+				},
+			},
+			{
+				displayName: 'Dated After',
+				name: 'dated_after',
+				type: 'dateTime',
+				description: 'Only expenses dated after this date will be returned',
+				default: '',
+			},
+			{
+				displayName: 'Dated Before',
+				name: 'dated_before',
+				type: 'dateTime',
+				description: 'Only expenses dated before this date will be returned',
+				default: '',
+			},
+			{
+				displayName: 'Updated After',
+				name: 'updated_after',
+				type: 'dateTime',
+				description: 'Only expenses updated after this date will be returned',
+				default: '',
+			},
+			{
+				displayName: 'Updated Before',
+				name: 'updated_before',
+				type: 'dateTime',
+				description: 'Only expenses updated before this date will be returned',
+				default: '',
+			},
+			{
+				displayName: 'Limit',
+				name: 'limit',
+				description: 'Max number of results to return',
+				type: 'number',
+				default: 50,
+				typeOptions: {
+					minValue: 1,
+				},
+			},
+			{
+				displayName: 'Offset',
+				name: 'offset',
+				description: 'Number of results to skip',
+				type: 'number',
+				default: 0,
+				typeOptions: {
+					minValue: 0,
+				},
+			},
+		],
+	},
+];
+
+export const expenseFields: INodeProperties[] = [...createExpenseFields, ...getAllExpenseFields];

@@ -7,7 +7,13 @@ import {
 	NodeOperationError,
 } from 'n8n-workflow';
 import { expenseFields, expenseOperations } from './ExpenseDescription';
-import { getCategories, getCurrencies, getGroups, splitwiseApiRequest } from './GenericFunctions';
+import {
+	getCategories,
+	getCurrencies,
+	getGroups,
+	getFriends,
+	splitwiseApiRequest,
+} from './GenericFunctions';
 
 export class Splitwise implements INodeType {
 	description: INodeTypeDescription = {
@@ -90,6 +96,7 @@ export class Splitwise implements INodeType {
 			getCategories,
 			getCurrencies,
 			getGroups,
+			getFriends,
 		},
 	};
 
@@ -100,8 +107,15 @@ export class Splitwise implements INodeType {
 		const resource = this.getNodeParameter('resource', 0) as string;
 		const operation = this.getNodeParameter('operation', 0) as string;
 
+		let body: IDataObject;
+		let query: IDataObject;
+		let responseData;
+
 		for (let i = 0; i < items.length; i++) {
 			try {
+				body = {};
+				query = {};
+
 				if (resource === 'expense') {
 					if (operation === 'create') {
 						const cost = this.getNodeParameter('cost', i) as number;
@@ -111,7 +125,7 @@ export class Splitwise implements INodeType {
 						const groupId = this.getNodeParameter('group_id', i) as number;
 						const splitEqually = this.getNodeParameter('split_equally', i) as boolean;
 
-						const body: IDataObject = {
+						body = {
 							cost: cost.toFixed(2),
 							description,
 							currency_code: currencyCode,
@@ -126,16 +140,50 @@ export class Splitwise implements INodeType {
 							Object.assign(body, additionalFields);
 						}
 
-						const response = await splitwiseApiRequest.call(this, 'POST', '/create_expense', body);
+						responseData = await splitwiseApiRequest.call(this, 'POST', '/create_expense', body);
 
-						if (response.error || response.errors?.base?.length) {
-							const errorMessage = response.error ? response.error : response.errors.base[0];
+						if (responseData.error || responseData.errors?.base?.length) {
+							const errorMessage = responseData.error
+								? responseData.error
+								: responseData.errors.base[0];
 							throw new NodeOperationError(this.getNode(), errorMessage, { itemIndex: i });
 						}
 
-						returnData.push(response.expenses);
+						responseData = responseData.expense;
+					}
+
+					if (operation === 'getAll') {
+						const additionalFields = this.getNodeParameter('additionalFields', i) as IDataObject;
+
+						if (!additionalFields.limit) {
+							additionalFields.limit = 50;
+						}
+
+						if (Object.keys(additionalFields).length) {
+							Object.assign(query, additionalFields);
+						}
+
+						responseData = await splitwiseApiRequest.call(this, 'GET', '/get_expenses', {}, query);
+
+						if (responseData.error || responseData.errors?.base?.length) {
+							const errorMessage = responseData.error
+								? responseData.error
+								: responseData.errors.base[0];
+							throw new NodeOperationError(this.getNode(), errorMessage, { itemIndex: i });
+						}
+
+						responseData = responseData.expenses;
 					}
 				}
+
+				returnData.push(
+					...this.helpers.constructExecutionMetaData(
+						this.helpers.returnJsonArray(responseData as IDataObject[]),
+						{
+							itemData: { item: i },
+						},
+					),
+				);
 			} catch (error) {
 				if (this.continueOnFail()) {
 					returnData.push({ error: error.message });
@@ -146,6 +194,6 @@ export class Splitwise implements INodeType {
 			}
 		}
 
-		return [this.helpers.returnJsonArray(returnData)];
+		return [returnData as INodeExecutionData[]];
 	}
 }

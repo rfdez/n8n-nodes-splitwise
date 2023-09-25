@@ -148,3 +148,37 @@ export async function getGroups(this: ILoadOptionsFunctions): Promise<INodePrope
 
 	return returnData;
 }
+
+export async function getFriends(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+	const endpoint = '/get_friends';
+	const responseData = await splitwiseApiRequest.call(this, 'GET', endpoint, {});
+
+	if (responseData.friends === undefined) {
+		throw new NodeApiError(this.getNode(), responseData as JsonObject, {
+			message: 'No data got returned',
+		});
+	}
+
+	const returnData: INodePropertyOptions[] = [];
+	for (const friend of responseData.friends) {
+		const friendName = `${friend.first_name} ${friend.last_name}`;
+		const friendId = friend.id;
+
+		returnData.push({
+			name: friendName,
+			value: friendId,
+		});
+	}
+
+	returnData.sort((a, b) => {
+		if (a.name < b.name) {
+			return -1;
+		}
+		if (a.name > b.name) {
+			return 1;
+		}
+		return 0;
+	});
+
+	return returnData;
+}

@@ -22,6 +22,7 @@ Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes
 
 - Expenses
 	- Create an expense (in equally split mode)
+	- List the current user's expenses
 
 ## Credentials
 
@@ -41,7 +42,7 @@ If you are using the OAuth 2.0 authentication method, you need to copy the callb
 
 ## Compatibility
 
-This node was tested against Splitwise API 3.0.0 and n8n 1.5.1.
+This node was tested against Splitwise API 3.0.0 and n8n 1.7.1.
 
 ## Usage
 
