@@ -241,12 +241,6 @@ export class Splitwise implements INodeType {
 					if (operation === 'getAll') {
 						responseData = await splitwiseApiRequest.call(this, 'GET', '/get_groups', {});
 
-						if (responseData.error) {
-							const errorMessage = responseData.error;
-
-							throw new NodeOperationError(this.getNode(), errorMessage, { itemIndex: i });
-						}
-
 						responseData = responseData.groups;
 					}
 
