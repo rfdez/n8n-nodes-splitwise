@@ -223,12 +223,11 @@ export class Splitwise implements INodeType {
 
 						responseData = await splitwiseApiRequest.call(this, 'POST', `/delete_group/${id}`, {});
 
-						if (responseData.error || responseData.errors?.base?.length) {
-							const errorMessage = responseData.error
-								? responseData.error
-								: responseData.errors.base[0];
-							throw new NodeOperationError(this.getNode(), errorMessage, { itemIndex: i });
+						if (!responseData.success) {
+							throw new NodeOperationError(this.getNode(), "Could not delete group", { itemIndex: i });
 						}
+
+						responseData = { success: true };
 					}
 
 					if (operation === 'get') {
