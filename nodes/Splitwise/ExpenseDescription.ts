@@ -20,10 +20,10 @@ export const expenseOperations: INodeProperties[] = [
 				action: 'Create an expense',
 			},
 			{
-				name: 'Get Many',
-				value: 'getAll',
-				description: "List the current user's expenses",
-				action: 'Get many expenses',
+				name: 'Delete',
+				value: 'delete',
+				description: 'Delete an expense',
+				action: 'Delete an expense',
 			},
 			{
 				name: 'Get',
@@ -32,10 +32,16 @@ export const expenseOperations: INodeProperties[] = [
 				action: 'Get an expense',
 			},
 			{
-				name: 'Delete',
-				value: 'delete',
-				description: 'Delete an expense',
-				action: 'Delete an expense',
+				name: 'Get Many',
+				value: 'getAll',
+				description: "List the current user's expenses",
+				action: 'Get many expenses',
+			},
+			{
+				name: 'Restore',
+				value: 'restore',
+				description: 'Restore an expense',
+				action: 'Restore an expense',
 			},
 		],
 	},
@@ -52,7 +58,7 @@ const sharedExpenseFields: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				resource: ['expense'],
-				operation: ['get', 'delete'],
+				operation: ['get', 'delete', 'restore'],
 			},
 		},
 		typeOptions: {

@@ -207,6 +207,24 @@ export class Splitwise implements INodeType {
 							throw new NodeOperationError(this.getNode(), errorMessage, { itemIndex: i });
 						}
 					}
+
+					if (operation === 'restore') {
+						const id = this.getNodeParameter('id', i) as number;
+
+						responseData = await splitwiseApiRequest.call(
+							this,
+							'POST',
+							`/undelete_expense/${id}`,
+							{},
+						);
+
+						if (responseData.error || responseData.errors?.base?.length) {
+							const errorMessage = responseData.error
+								? responseData.error
+								: responseData.errors.base[0];
+							throw new NodeOperationError(this.getNode(), errorMessage, { itemIndex: i });
+						}
+					}
 				}
 
 				returnData.push(

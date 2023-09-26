@@ -1,6 +1,6 @@
 {
   "name": "@rfdez/n8n-nodes-splitwise",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "n8n community node to consume the Splitwise API",
   "keywords": [
     "n8n-community-node-package"
