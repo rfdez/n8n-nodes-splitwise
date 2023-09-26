@@ -196,13 +196,6 @@ export class Splitwise implements INodeType {
 
 						responseData = await splitwiseApiRequest.call(this, 'GET', '/get_expenses', {}, query);
 
-						if (responseData.error || responseData.errors?.base?.length) {
-							const errorMessage = responseData.error
-								? responseData.error
-								: responseData.errors.base[0];
-							throw new NodeOperationError(this.getNode(), errorMessage, { itemIndex: i });
-						}
-
 						responseData = responseData.expenses;
 					}
 
