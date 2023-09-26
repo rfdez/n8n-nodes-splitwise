@@ -167,12 +167,12 @@ export class Splitwise implements INodeType {
 							{},
 						);
 
-						if (responseData.error || responseData.errors?.base?.length) {
-							const errorMessage = responseData.error
-								? responseData.error
-								: responseData.errors.base[0];
+						if (!responseData.success) {
+							const errorMessage = responseData.errors.expense?.length ? responseData.errors.expense.join(', ') : 'Could not delete expense';
 							throw new NodeOperationError(this.getNode(), errorMessage, { itemIndex: i });
 						}
+
+						responseData = { success: true };
 					}
 
 					if (operation === 'get') {
