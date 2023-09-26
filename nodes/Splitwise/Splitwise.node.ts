@@ -81,20 +81,20 @@ export class Splitwise implements INodeType {
 				noDataExpression: true,
 				options: [
 					{
-						name: 'Group',
-						value: 'group',
-					},
-					{
 						name: 'Expense',
 						value: 'expense',
 					},
+					{
+						name: 'Group',
+						value: 'group',
+					},
 				],
-				default: 'group',
+				default: 'expense',
 			},
-			...groupOperations,
-			...groupFields,
 			...expenseOperations,
 			...expenseFields,
+			...groupOperations,
+			...groupFields,
 		],
 	};
 
@@ -102,8 +102,8 @@ export class Splitwise implements INodeType {
 		loadOptions: {
 			getCategories,
 			getCurrencies,
-			getGroups,
 			getFriends,
+			getGroups,
 		},
 	};
 
@@ -124,18 +124,6 @@ export class Splitwise implements INodeType {
 				query = {};
 
 				if (resource === 'group') {
-					if (operation === 'getAll') {
-						responseData = await splitwiseApiRequest.call(this, 'GET', '/get_groups', {});
-
-						if (responseData.error) {
-							const errorMessage = responseData.error;
-
-							throw new NodeOperationError(this.getNode(), errorMessage, { itemIndex: i });
-						}
-
-						responseData = responseData.groups;
-					}
-
 					if (operation === 'get') {
 						const id = this.getNodeParameter('id', i) as number;
 
@@ -149,6 +137,18 @@ export class Splitwise implements INodeType {
 						}
 
 						responseData = responseData.group;
+					}
+
+					if (operation === 'getAll') {
+						responseData = await splitwiseApiRequest.call(this, 'GET', '/get_groups', {});
+
+						if (responseData.error) {
+							const errorMessage = responseData.error;
+
+							throw new NodeOperationError(this.getNode(), errorMessage, { itemIndex: i });
+						}
+
+						responseData = responseData.groups;
 					}
 				}
 
@@ -188,6 +188,39 @@ export class Splitwise implements INodeType {
 						responseData = responseData.expense;
 					}
 
+					if (operation === 'delete') {
+						const id = this.getNodeParameter('id', i) as number;
+
+						responseData = await splitwiseApiRequest.call(
+							this,
+							'POST',
+							`/delete_expense/${id}`,
+							{},
+						);
+
+						if (responseData.error || responseData.errors?.base?.length) {
+							const errorMessage = responseData.error
+								? responseData.error
+								: responseData.errors.base[0];
+							throw new NodeOperationError(this.getNode(), errorMessage, { itemIndex: i });
+						}
+					}
+
+					if (operation === 'get') {
+						const id = this.getNodeParameter('id', i) as number;
+
+						responseData = await splitwiseApiRequest.call(this, 'GET', `/get_expense/${id}`, {});
+
+						if (responseData.error || responseData.errors?.base?.length) {
+							const errorMessage = responseData.error
+								? responseData.error
+								: responseData.errors.base[0];
+							throw new NodeOperationError(this.getNode(), errorMessage, { itemIndex: i });
+						}
+
+						responseData = responseData.expense;
+					}
+
 					if (operation === 'getAll') {
 						const additionalFields = this.getNodeParameter('additionalFields', i) as IDataObject;
 
@@ -209,39 +242,6 @@ export class Splitwise implements INodeType {
 						}
 
 						responseData = responseData.expenses;
-					}
-
-					if (operation === 'get') {
-						const id = this.getNodeParameter('id', i) as number;
-
-						responseData = await splitwiseApiRequest.call(this, 'GET', `/get_expense/${id}`, {});
-
-						if (responseData.error || responseData.errors?.base?.length) {
-							const errorMessage = responseData.error
-								? responseData.error
-								: responseData.errors.base[0];
-							throw new NodeOperationError(this.getNode(), errorMessage, { itemIndex: i });
-						}
-
-						responseData = responseData.expense;
-					}
-
-					if (operation === 'delete') {
-						const id = this.getNodeParameter('id', i) as number;
-
-						responseData = await splitwiseApiRequest.call(
-							this,
-							'POST',
-							`/delete_expense/${id}`,
-							{},
-						);
-
-						if (responseData.error || responseData.errors?.base?.length) {
-							const errorMessage = responseData.error
-								? responseData.error
-								: responseData.errors.base[0];
-							throw new NodeOperationError(this.getNode(), errorMessage, { itemIndex: i });
-						}
 					}
 
 					if (operation === 'restore') {

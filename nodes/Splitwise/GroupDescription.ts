@@ -6,7 +6,7 @@ export const groupOperations: INodeProperties[] = [
 		name: 'operation',
 		type: 'options',
 		noDataExpression: true,
-		default: 'getAll',
+		default: 'get',
 		displayOptions: {
 			show: {
 				resource: ['group'],
@@ -14,17 +14,17 @@ export const groupOperations: INodeProperties[] = [
 		},
 		options: [
 			{
+				name: 'Get',
+				value: 'get',
+				description: 'Get information about a group',
+				action: 'Get a group',
+			},
+			{
 				name: 'Get Many',
 				value: 'getAll',
 				description:
 					"List the current user's groups. Expenses that are not associated with a group are listed in a group with ID 0.",
 				action: 'Get many groups',
-			},
-			{
-				name: 'Get',
-				value: 'get',
-				description: 'Get information about a group',
-				action: 'Get a group',
 			},
 		],
 	},

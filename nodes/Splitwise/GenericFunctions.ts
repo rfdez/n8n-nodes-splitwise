@@ -36,39 +36,6 @@ export async function splitwiseApiRequest(
 	return this.helpers.requestWithAuthentication.call(this, credentialsType, options);
 }
 
-export async function getCurrencies(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-	const endpoint = '/get_currencies';
-	const responseData = await splitwiseApiRequest.call(this, 'GET', endpoint, {});
-
-	if (responseData.currencies === undefined) {
-		throw new NodeApiError(this.getNode(), responseData as JsonObject, {
-			message: 'No data got returned',
-		});
-	}
-
-	const returnData: INodePropertyOptions[] = [];
-	for (const currency of responseData.currencies) {
-		const currencyCode = currency.currency_code;
-
-		returnData.push({
-			name: currencyCode,
-			value: currencyCode,
-		});
-	}
-
-	returnData.sort((a, b) => {
-		if (a.name < b.name) {
-			return -1;
-		}
-		if (a.name > b.name) {
-			return 1;
-		}
-		return 0;
-	});
-
-	return returnData;
-}
-
 export async function getCategories(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
 	const endpoint = '/get_categories';
 	const responseData = await splitwiseApiRequest.call(this, 'GET', endpoint, {});
@@ -115,24 +82,23 @@ export async function getCategories(this: ILoadOptionsFunctions): Promise<INodeP
 	return returnData;
 }
 
-export async function getGroups(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-	const endpoint = '/get_groups';
+export async function getCurrencies(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+	const endpoint = '/get_currencies';
 	const responseData = await splitwiseApiRequest.call(this, 'GET', endpoint, {});
 
-	if (responseData.groups === undefined) {
+	if (responseData.currencies === undefined) {
 		throw new NodeApiError(this.getNode(), responseData as JsonObject, {
 			message: 'No data got returned',
 		});
 	}
 
 	const returnData: INodePropertyOptions[] = [];
-	for (const group of responseData.groups) {
-		const groupName = group.name;
-		const groupId = group.id;
+	for (const currency of responseData.currencies) {
+		const currencyCode = currency.currency_code;
 
 		returnData.push({
-			name: groupName,
-			value: groupId,
+			name: currencyCode,
+			value: currencyCode,
 		});
 	}
 
@@ -167,6 +133,40 @@ export async function getFriends(this: ILoadOptionsFunctions): Promise<INodeProp
 		returnData.push({
 			name: friendName,
 			value: friendId,
+		});
+	}
+
+	returnData.sort((a, b) => {
+		if (a.name < b.name) {
+			return -1;
+		}
+		if (a.name > b.name) {
+			return 1;
+		}
+		return 0;
+	});
+
+	return returnData;
+}
+
+export async function getGroups(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+	const endpoint = '/get_groups';
+	const responseData = await splitwiseApiRequest.call(this, 'GET', endpoint, {});
+
+	if (responseData.groups === undefined) {
+		throw new NodeApiError(this.getNode(), responseData as JsonObject, {
+			message: 'No data got returned',
+		});
+	}
+
+	const returnData: INodePropertyOptions[] = [];
+	for (const group of responseData.groups) {
+		const groupName = group.name;
+		const groupId = group.id;
+
+		returnData.push({
+			name: groupName,
+			value: groupId,
 		});
 	}
 
