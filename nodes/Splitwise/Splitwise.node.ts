@@ -14,6 +14,7 @@ import {
 	getFriends,
 	splitwiseApiRequest,
 } from './GenericFunctions';
+import { groupOperations } from './GroupDescription';
 
 export class Splitwise implements INodeType {
 	description: INodeTypeDescription = {
@@ -80,12 +81,17 @@ export class Splitwise implements INodeType {
 				noDataExpression: true,
 				options: [
 					{
+						name: 'Group',
+						value: 'group',
+					},
+					{
 						name: 'Expense',
 						value: 'expense',
 					},
 				],
-				default: 'expense',
+				default: 'group',
 			},
+			...groupOperations,
 			...expenseOperations,
 			...expenseFields,
 		],
@@ -115,6 +121,20 @@ export class Splitwise implements INodeType {
 			try {
 				body = {};
 				query = {};
+
+				if (resource === 'group') {
+					if (operation === 'getAll') {
+						responseData = await splitwiseApiRequest.call(this, 'GET', '/get_groups', {});
+
+						if (responseData.error) {
+							const errorMessage = responseData.error;
+
+							throw new NodeOperationError(this.getNode(), errorMessage, { itemIndex: i });
+						}
+
+						responseData = responseData.groups;
+					}
+				}
 
 				if (resource === 'expense') {
 					if (operation === 'create') {

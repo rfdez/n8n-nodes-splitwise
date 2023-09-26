@@ -20,6 +20,9 @@ Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes
 
 ## Operations
 
+- Groups
+  - List the current user's groups
+
 - Expenses
   - Get expense information
   - List the current user's expenses
