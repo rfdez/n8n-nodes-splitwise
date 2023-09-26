@@ -307,9 +307,9 @@ export class Splitwise implements INodeType {
 					returnData.push(
 						...this.helpers.constructExecutionMetaData(
 							this.helpers.returnJsonArray({ error: error.message }),
-						{
-							itemData: { item: i },
-						}
+							{
+								itemData: { item: i },
+							},
 						),
 					);
 
