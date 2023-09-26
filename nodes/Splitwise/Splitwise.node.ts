@@ -209,12 +209,11 @@ export class Splitwise implements INodeType {
 							{},
 						);
 
-						if (responseData.error || responseData.errors?.base?.length) {
-							const errorMessage = responseData.error
-								? responseData.error
-								: responseData.errors.base[0];
-							throw new NodeOperationError(this.getNode(), errorMessage, { itemIndex: i });
+						if (!responseData.success) {
+							throw new NodeOperationError(this.getNode(), "Could not restore expense", { itemIndex: i });
 						}
+
+						responseData = { success: true };
 					}
 				}
 
