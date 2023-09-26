@@ -28,7 +28,7 @@ export const expenseOperations: INodeProperties[] = [
 			{
 				name: 'Get',
 				value: 'get',
-				description: "Get expense information",
+				description: 'Get expense information',
 				action: 'Get an expense',
 			},
 		],
@@ -305,6 +305,10 @@ const getExpenseFields: INodeProperties[] = [
 			numberPrecision: 0,
 		},
 	},
-]
+];
 
-export const expenseFields: INodeProperties[] = [...createExpenseFields, ...getAllExpenseFields, ...getExpenseFields];
+export const expenseFields: INodeProperties[] = [
+	...createExpenseFields,
+	...getAllExpenseFields,
+	...getExpenseFields,
+];
