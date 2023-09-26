@@ -57,7 +57,7 @@ const sharedExpenseFields: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				resource: ['expense'],
-				operation: ['delete', 'restore'],
+				operation: ['restore'],
 			},
 		},
 	},
