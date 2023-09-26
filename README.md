@@ -24,6 +24,7 @@ Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes
   - Delete a group
   - Get information about a group
   - List the current user's groups
+  - Restore a group
 
 - Expenses
   - Create an expense (in equally split mode)

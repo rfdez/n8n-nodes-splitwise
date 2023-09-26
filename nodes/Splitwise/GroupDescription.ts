@@ -32,6 +32,12 @@ export const groupOperations: INodeProperties[] = [
 					"List the current user's groups. Expenses that are not associated with a group are listed in a group with ID 0.",
 				action: 'Get many groups',
 			},
+			{
+				name: 'Restore',
+				value: 'restore',
+				description: 'Restores a deleted group',
+				action: 'Restore a group',
+			},
 		],
 	},
 ];
@@ -48,7 +54,7 @@ const sharedGroupFields: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				resource: ['group'],
-				operation: ['delete', 'get'],
+				operation: ['delete', 'get', 'restore'],
 			},
 		},
 		typeOptions: {
