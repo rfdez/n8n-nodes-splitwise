@@ -28,8 +28,7 @@ export const groupOperations: INodeProperties[] = [
 			{
 				name: 'Get Many',
 				value: 'getAll',
-				description:
-					"List the current user's groups. Expenses that are not associated with a group are listed in a group with ID 0.",
+				description: "List the current user's groups",
 				action: 'Get many groups',
 			},
 			{
@@ -43,6 +42,32 @@ export const groupOperations: INodeProperties[] = [
 ];
 
 const sharedGroupFields: INodeProperties[] = [
+	{
+		displayName:
+			'<b>Note:</b> 200 OK does not indicate a successful response. You must check the <code>success</code> value of the response.',
+		name: 'notice',
+		type: 'notice',
+		default: '',
+		displayOptions: {
+			show: {
+				resource: ['group'],
+				operation: ['restore'],
+			},
+		},
+	},
+	{
+		displayName:
+			'<b>Note:</b> Expenses that are not associated with a group are listed in a group with ID 0.',
+		name: 'notice',
+		type: 'notice',
+		default: '',
+		displayOptions: {
+			show: {
+				resource: ['group'],
+				operation: ['getAll'],
+			},
+		},
+	},
 	{
 		displayName: 'Group Name or ID',
 		name: 'id',

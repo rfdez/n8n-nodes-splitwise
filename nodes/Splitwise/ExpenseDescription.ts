@@ -49,6 +49,19 @@ export const expenseOperations: INodeProperties[] = [
 
 const sharedExpenseFields: INodeProperties[] = [
 	{
+		displayName:
+			'<b>Note:</b> 200 OK does not indicate a successful response. You must check the <code>success</code> value of the response.',
+		name: 'notice',
+		type: 'notice',
+		default: '',
+		displayOptions: {
+			show: {
+				resource: ['expense'],
+				operation: ['delete', 'restore'],
+			},
+		},
+	},
+	{
 		displayName: 'Expense ID',
 		name: 'id',
 		type: 'number',
