@@ -24,6 +24,7 @@ Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes
   - Get expense information
   - List the current user's expenses
   - Create an expense (in equally split mode)
+  - Delete an expense
 
 ## Credentials
 

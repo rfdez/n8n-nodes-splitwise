@@ -31,7 +31,35 @@ export const expenseOperations: INodeProperties[] = [
 				description: 'Get expense information',
 				action: 'Get an expense',
 			},
+			{
+				name: 'Delete',
+				value: 'delete',
+				description: 'Delete an expense',
+				action: 'Delete an expense',
+			},
 		],
+	},
+];
+
+const sharedExpenseFields: INodeProperties[] = [
+	{
+		displayName: 'Expense ID',
+		name: 'id',
+		type: 'number',
+		description: 'ID of the expense',
+		default: 0,
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['expense'],
+				operation: ['get', 'delete'],
+			},
+		},
+		typeOptions: {
+			minValue: 0,
+			numberStepSize: 1,
+			numberPrecision: 0,
+		},
 	},
 ];
 
@@ -285,30 +313,8 @@ const getAllExpenseFields: INodeProperties[] = [
 	},
 ];
 
-const getExpenseFields: INodeProperties[] = [
-	{
-		displayName: 'Expense ID',
-		name: 'id',
-		type: 'number',
-		description: 'ID of the expense to get',
-		default: 0,
-		required: true,
-		displayOptions: {
-			show: {
-				resource: ['expense'],
-				operation: ['get'],
-			},
-		},
-		typeOptions: {
-			minValue: 0,
-			numberStepSize: 1,
-			numberPrecision: 0,
-		},
-	},
-];
-
 export const expenseFields: INodeProperties[] = [
+	...sharedExpenseFields,
 	...createExpenseFields,
 	...getAllExpenseFields,
-	...getExpenseFields,
 ];
