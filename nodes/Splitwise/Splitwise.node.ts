@@ -123,66 +123,6 @@ export class Splitwise implements INodeType {
 				body = {};
 				query = {};
 
-				if (resource === 'group') {
-					if (operation === 'delete') {
-						const id = this.getNodeParameter('id', i) as number;
-
-						responseData = await splitwiseApiRequest.call(this, 'POST', `/delete_group/${id}`, {});
-
-						if (responseData.error || responseData.errors?.base?.length) {
-							const errorMessage = responseData.error
-								? responseData.error
-								: responseData.errors.base[0];
-							throw new NodeOperationError(this.getNode(), errorMessage, { itemIndex: i });
-						}
-					}
-
-					if (operation === 'get') {
-						const id = this.getNodeParameter('id', i) as number;
-
-						responseData = await splitwiseApiRequest.call(this, 'GET', `/get_group/${id}`, {});
-
-						if (responseData.error || responseData.errors?.base?.length) {
-							const errorMessage = responseData.error
-								? responseData.error
-								: responseData.errors.base[0];
-							throw new NodeOperationError(this.getNode(), errorMessage, { itemIndex: i });
-						}
-
-						responseData = responseData.group;
-					}
-
-					if (operation === 'getAll') {
-						responseData = await splitwiseApiRequest.call(this, 'GET', '/get_groups', {});
-
-						if (responseData.error) {
-							const errorMessage = responseData.error;
-
-							throw new NodeOperationError(this.getNode(), errorMessage, { itemIndex: i });
-						}
-
-						responseData = responseData.groups;
-					}
-
-					if (operation === 'restore') {
-						const id = this.getNodeParameter('id', i) as number;
-
-						responseData = await splitwiseApiRequest.call(
-							this,
-							'POST',
-							`/undelete_group/${id}`,
-							{},
-						);
-
-						if (responseData.error || responseData.errors?.base?.length) {
-							const errorMessage = responseData.error
-								? responseData.error
-								: responseData.errors.base[0];
-							throw new NodeOperationError(this.getNode(), errorMessage, { itemIndex: i });
-						}
-					}
-				}
-
 				if (resource === 'expense') {
 					if (operation === 'create') {
 						const cost = this.getNodeParameter('cost', i) as number;
@@ -282,6 +222,66 @@ export class Splitwise implements INodeType {
 							this,
 							'POST',
 							`/undelete_expense/${id}`,
+							{},
+						);
+
+						if (responseData.error || responseData.errors?.base?.length) {
+							const errorMessage = responseData.error
+								? responseData.error
+								: responseData.errors.base[0];
+							throw new NodeOperationError(this.getNode(), errorMessage, { itemIndex: i });
+						}
+					}
+				}
+
+				if (resource === 'group') {
+					if (operation === 'delete') {
+						const id = this.getNodeParameter('id', i) as number;
+
+						responseData = await splitwiseApiRequest.call(this, 'POST', `/delete_group/${id}`, {});
+
+						if (responseData.error || responseData.errors?.base?.length) {
+							const errorMessage = responseData.error
+								? responseData.error
+								: responseData.errors.base[0];
+							throw new NodeOperationError(this.getNode(), errorMessage, { itemIndex: i });
+						}
+					}
+
+					if (operation === 'get') {
+						const id = this.getNodeParameter('id', i) as number;
+
+						responseData = await splitwiseApiRequest.call(this, 'GET', `/get_group/${id}`, {});
+
+						if (responseData.error || responseData.errors?.base?.length) {
+							const errorMessage = responseData.error
+								? responseData.error
+								: responseData.errors.base[0];
+							throw new NodeOperationError(this.getNode(), errorMessage, { itemIndex: i });
+						}
+
+						responseData = responseData.group;
+					}
+
+					if (operation === 'getAll') {
+						responseData = await splitwiseApiRequest.call(this, 'GET', '/get_groups', {});
+
+						if (responseData.error) {
+							const errorMessage = responseData.error;
+
+							throw new NodeOperationError(this.getNode(), errorMessage, { itemIndex: i });
+						}
+
+						responseData = responseData.groups;
+					}
+
+					if (operation === 'restore') {
+						const id = this.getNodeParameter('id', i) as number;
+
+						responseData = await splitwiseApiRequest.call(
+							this,
+							'POST',
+							`/undelete_group/${id}`,
 							{},
 						);
 
