@@ -156,7 +156,7 @@ export class Splitwise implements INodeType {
 							throw new NodeOperationError(this.getNode(), errorMessage, { itemIndex: i });
 						}
 
-						responseData = responseData.expense;
+						responseData = responseData.expenses;
 					}
 
 					if (operation === 'delete') {
