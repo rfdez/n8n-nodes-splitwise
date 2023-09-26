@@ -304,7 +304,15 @@ export class Splitwise implements INodeType {
 				);
 			} catch (error) {
 				if (this.continueOnFail()) {
-					returnData.push({ error: error.message });
+					returnData.push(
+						...this.helpers.constructExecutionMetaData(
+							this.helpers.returnJsonArray({ error: error.message }),
+						{
+							itemData: { item: i },
+						}
+						),
+					);
+
 					continue;
 				}
 
