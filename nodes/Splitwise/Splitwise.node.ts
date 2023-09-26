@@ -168,7 +168,9 @@ export class Splitwise implements INodeType {
 						);
 
 						if (!responseData.success) {
-							const errorMessage = responseData.errors.expense?.length ? responseData.errors.expense.join(', ') : 'Could not delete expense';
+							const errorMessage = responseData.errors.expense?.length
+								? responseData.errors.expense.join(', ')
+								: 'Could not delete expense';
 							throw new NodeOperationError(this.getNode(), errorMessage, { itemIndex: i });
 						}
 
@@ -210,7 +212,9 @@ export class Splitwise implements INodeType {
 						);
 
 						if (!responseData.success) {
-							throw new NodeOperationError(this.getNode(), "Could not restore expense", { itemIndex: i });
+							throw new NodeOperationError(this.getNode(), 'Could not restore expense', {
+								itemIndex: i,
+							});
 						}
 
 						responseData = { success: true };
@@ -224,7 +228,9 @@ export class Splitwise implements INodeType {
 						responseData = await splitwiseApiRequest.call(this, 'POST', `/delete_group/${id}`, {});
 
 						if (!responseData.success) {
-							throw new NodeOperationError(this.getNode(), "Could not delete group", { itemIndex: i });
+							throw new NodeOperationError(this.getNode(), 'Could not delete group', {
+								itemIndex: i,
+							});
 						}
 
 						responseData = { success: true };
@@ -255,7 +261,9 @@ export class Splitwise implements INodeType {
 						);
 
 						if (!responseData.success) {
-							const errorMessage = responseData.errors?.length ? responseData.errors.join(', ') : 'Could not restore group';
+							const errorMessage = responseData.errors?.length
+								? responseData.errors.join(', ')
+								: 'Could not restore group';
 							throw new NodeOperationError(this.getNode(), errorMessage, { itemIndex: i });
 						}
 
