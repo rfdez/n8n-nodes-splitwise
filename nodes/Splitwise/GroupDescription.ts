@@ -66,7 +66,7 @@ const sharedGroupFields: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				resource: ['group'],
-				operation: ['delete', 'get', 'restore'],
+				operation: ['delete', 'get'],
 			},
 		},
 		typeOptions: {
@@ -75,4 +75,26 @@ const sharedGroupFields: INodeProperties[] = [
 	},
 ];
 
-export const groupFields: INodeProperties[] = [...sharedGroupFields];
+const restoreGroupFields: INodeProperties[] = [
+	{
+		displayName: 'Group ID',
+		name: 'id',
+		type: 'number',
+		description: 'ID of the group',
+		default: 0,
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['group'],
+				operation: ['restore'],
+			},
+		},
+		typeOptions: {
+			minValue: 0,
+			numberStepSize: 1,
+			numberPrecision: 0,
+		},
+	},
+];
+
+export const groupFields: INodeProperties[] = [...sharedGroupFields, ...restoreGroupFields];
