@@ -25,10 +25,10 @@ Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes
   - List the current user's groups
 
 - Expenses
-  - Get expense information
-  - List the current user's expenses
   - Create an expense (in equally split mode)
   - Delete an expense
+  - Get expense information
+  - List the current user's expenses
   - Restore an expense
 
 ## Credentials
