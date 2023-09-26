@@ -21,6 +21,7 @@ Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes
 ## Operations
 
 - Groups
+  - Delete a group
   - Get information about a group
   - List the current user's groups
 

@@ -124,6 +124,19 @@ export class Splitwise implements INodeType {
 				query = {};
 
 				if (resource === 'group') {
+					if (operation === 'delete') {
+						const id = this.getNodeParameter('id', i) as number;
+
+						responseData = await splitwiseApiRequest.call(this, 'POST', `/delete_group/${id}`, {});
+
+						if (responseData.error || responseData.errors?.base?.length) {
+							const errorMessage = responseData.error
+								? responseData.error
+								: responseData.errors.base[0];
+							throw new NodeOperationError(this.getNode(), errorMessage, { itemIndex: i });
+						}
+					}
+
 					if (operation === 'get') {
 						const id = this.getNodeParameter('id', i) as number;
 

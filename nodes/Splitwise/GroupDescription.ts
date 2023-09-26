@@ -6,13 +6,19 @@ export const groupOperations: INodeProperties[] = [
 		name: 'operation',
 		type: 'options',
 		noDataExpression: true,
-		default: 'get',
+		default: 'delete',
 		displayOptions: {
 			show: {
 				resource: ['group'],
 			},
 		},
 		options: [
+			{
+				name: 'Delete',
+				value: 'delete',
+				description: 'Delete an existing group. Destroys all associated records (expenses, etc.).',
+				action: 'Delete a group',
+			},
 			{
 				name: 'Get',
 				value: 'get',
@@ -42,7 +48,7 @@ const sharedGroupFields: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				resource: ['group'],
-				operation: ['get'],
+				operation: ['delete', 'get'],
 			},
 		},
 		typeOptions: {
