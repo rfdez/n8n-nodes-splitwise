@@ -25,6 +25,12 @@ export const expenseOperations: INodeProperties[] = [
 				description: "List the current user's expenses",
 				action: 'Get many expenses',
 			},
+			{
+				name: 'Get',
+				value: 'get',
+				description: "Get expense information",
+				action: 'Get an expense',
+			},
 		],
 	},
 ];
@@ -279,4 +285,26 @@ const getAllExpenseFields: INodeProperties[] = [
 	},
 ];
 
-export const expenseFields: INodeProperties[] = [...createExpenseFields, ...getAllExpenseFields];
+const getExpenseFields: INodeProperties[] = [
+	{
+		displayName: 'Expense ID',
+		name: 'id',
+		type: 'number',
+		description: 'ID of the expense to get',
+		default: 0,
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['expense'],
+				operation: ['get'],
+			},
+		},
+		typeOptions: {
+			minValue: 0,
+			numberStepSize: 1,
+			numberPrecision: 0,
+		},
+	},
+]
+
+export const expenseFields: INodeProperties[] = [...createExpenseFields, ...getAllExpenseFields, ...getExpenseFields];
