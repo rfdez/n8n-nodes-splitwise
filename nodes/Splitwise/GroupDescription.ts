@@ -44,19 +44,6 @@ export const groupOperations: INodeProperties[] = [
 const sharedGroupFields: INodeProperties[] = [
 	{
 		displayName:
-			'<b>Note:</b> 200 OK does not indicate a successful response. You must check the <code>success</code> value of the response.',
-		name: 'notice',
-		type: 'notice',
-		default: '',
-		displayOptions: {
-			show: {
-				resource: ['group'],
-				operation: ['restore'],
-			},
-		},
-	},
-	{
-		displayName:
 			'<b>Note:</b> Expenses that are not associated with a group are listed in a group with ID 0.',
 		name: 'notice',
 		type: 'notice',
